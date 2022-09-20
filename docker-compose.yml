@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  app:
+    image: bug-track-system
+    build: .
+    container_name: bts-app
+    environment:
+      - MYSQL_URL=jdbc:mysql://bts-mysql:3306/dts
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+  mysql:
+    image: mysql:5.6.27
+    container_name: bts-mysql
+    volumes:
+      - ./schemas/dts.sql:/schemas/dts.sql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
