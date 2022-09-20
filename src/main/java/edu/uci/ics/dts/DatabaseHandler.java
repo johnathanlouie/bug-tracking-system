@@ -23,11 +23,14 @@ public class DatabaseHandler {
 
     // sends a query to the database and returns the results
     private static Vector<Vector<String>> query(String sql) {
+        String url = System.getenv("MYSQL_URL");
+        String username = System.getenv("MYSQL_USER");
+        String password = System.getenv("MYSQL_PASSWORD");
         try {
             // load driver
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             // connect to database
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/dts", "root", "");
+            Connection c = DriverManager.getConnection(url, username, password);
             // sends a sql statement
             Statement s = c.createStatement();
             s.execute(sql);
