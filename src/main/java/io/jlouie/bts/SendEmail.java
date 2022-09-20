@@ -1,4 +1,4 @@
-package edu.uci.ics.dts;
+package io.jlouie.bts;
 
 import java.util.Properties;
 import java.util.logging.Level;

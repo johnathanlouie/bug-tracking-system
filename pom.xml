@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.uci.ics</groupId>
-    <artifactId>defect-tracking-system</artifactId>
+    <groupId>io.jlouie</groupId>
+    <artifactId>bug-tracking-system</artifactId>
     <version>0.0.2</version>
     <build>
         <plugins>
@@ -34,7 +34,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <packaging>war</packaging>
-    <name>Defect Tracking System</name>
+    <name>Bug Tracking System</name>
     <dependencies>
         <dependency>
             <groupId>javax</groupId>

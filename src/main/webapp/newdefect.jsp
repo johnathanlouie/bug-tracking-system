@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Defect Tracking System - New Defect</title>
+        <title>Bug Tracking System - New Defect</title>
     </head>
     <body>
         <h1>New Defect</h1>
