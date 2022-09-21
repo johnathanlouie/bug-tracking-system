@@ -15,6 +15,7 @@
  */
 package io.jlouie.bts;
 
+import java.util.Vector;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,11 @@ public class MyAssignments extends LoginServlet {
 
     @Override
     protected LoginServletHelper mainMethod(HttpServletRequest request, HttpServletResponse response) {
-        String s = vectorBugToTable(DatabaseHandler.getAssignments(((User) request.getSession(false).getAttribute("user")).getUsername()));
-        request.setAttribute("message", s);
+        User user = (User) request.getSession(false).getAttribute("user");
+        String username = user.getUsername();
+        Vector<Bug> bugs = DatabaseHandler.getAssignments(username);
+        String html = vectorBugToTable(bugs);
+        request.setAttribute("message", html);
         String forwardPage = "/defectslist.jsp";
         return new LoginServletHelper(request, response, forwardPage);
     }
