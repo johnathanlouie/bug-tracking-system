@@ -9,6 +9,8 @@ services:
       - MYSQL_URL=jdbc:mysql://bts-mysql:3306/dts
       - MYSQL_USER=root
       - MYSQL_PASSWORD=
+    volumes:
+      - ./logs:/usr/local/tomcat/logs
     depends_on:
       - mysql
     ports:
