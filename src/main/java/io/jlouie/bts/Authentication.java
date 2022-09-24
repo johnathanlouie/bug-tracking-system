@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author user
+ * @author Johnathan Louie
  */
 @WebServlet(name = "Authentication", urlPatterns = {"/Authentication", ""})
 public class Authentication extends HttpServlet {

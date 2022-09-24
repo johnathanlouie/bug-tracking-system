@@ -17,7 +17,7 @@ package io.jlouie.bts;
 
 /**
  *
- * @author root
+ * @author Johnathan Louie
  */
 public class Bug {
 

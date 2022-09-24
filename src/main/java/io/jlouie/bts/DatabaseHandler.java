@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author user
+ * @author Johnathan Louie
  */
 public class DatabaseHandler {
 
