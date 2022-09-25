@@ -1,7 +1,7 @@
 <%--
     Document   : mainmenu
     Created on : Mar 19, 2015, 2:41:05 PM
-    Author     : root
+    Author     : Johnathan Louie
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

@@ -1,7 +1,7 @@
 <%--
     Document   : index
     Created on : Mar 19, 2015, 1:00:09 AM
-    Author     : user
+    Author     : Johnathan Louie
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

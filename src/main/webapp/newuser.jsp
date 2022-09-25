@@ -1,7 +1,7 @@
 <%--
     Document   : newuser
     Created on : Mar 21, 2015, 2:02:44 AM
-    Author     : user
+    Author     : Johnathan Louie
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

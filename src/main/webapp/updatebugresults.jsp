@@ -1,7 +1,7 @@
 <%--
     Document   : updatebugresults
     Created on : Mar 20, 2015, 1:10:52 AM
-    Author     : user
+    Author     : Johnathan Louie
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

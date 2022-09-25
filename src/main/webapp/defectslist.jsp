@@ -1,7 +1,7 @@
 <%-- 
     Document   : defectslist
     Created on : Mar 19, 2015, 7:52:36 PM
-    Author     : user
+    Author     : Johnathan Louie
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

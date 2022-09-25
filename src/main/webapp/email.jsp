@@ -1,7 +1,7 @@
 <%--
     Document   : email
     Created on : Mar 20, 2015, 2:46:32 AM
-    Author     : user
+    Author     : Johnathan Louie
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
