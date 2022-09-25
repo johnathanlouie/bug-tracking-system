@@ -188,7 +188,7 @@ public class DatabaseHandler {
     }
 
     protected static void updateDefect(Bug bug) {
-        String s = "UPDATE dts . bugs SET assignee='" + bug.getAssignee() + "', priority='" + bug.getPriority() + "', summary='" + bug.getSummary() + "', description='" + bug.getDescription() + "', status='" + ((bug.isStatus() == true) ? 1 : 0) + "' WHERE bugs . id=" + bug.getId();
+        String s = "UPDATE dts . bugs SET assignee='" + bug.getAssignee() + "', priority='" + bug.getPriority() + "', summary='" + bug.getSummary() + "', description='" + bug.getDescription() + "', status='" + (bug.isStatus() ? 1 : 0) + "' WHERE bugs . id=" + bug.getId();
         query(s);
     }
 
