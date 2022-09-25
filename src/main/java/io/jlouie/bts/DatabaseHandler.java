@@ -62,10 +62,7 @@ public class DatabaseHandler {
             // END finish making vector
             s.close();
             c.close();
-            if (vector.size() > 0) {
-                return vector;
-            }
-            return null;
+            return vector;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
