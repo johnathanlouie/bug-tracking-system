@@ -192,7 +192,4 @@ public class DatabaseHandler {
         query(s);
     }
 
-    /*public static void main(String[] args) {
-     getAssignments("admin");
-     }*/
 }
