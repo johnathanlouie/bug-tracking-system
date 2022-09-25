@@ -41,24 +41,6 @@ public abstract class LoginServlet extends HttpServlet {
         }
     }
 
-    protected static String vectorBugToTable(Vector<Bug> v) {
-        String s = "";
-        if (v != null) {
-            for (Bug i : v) {
-                s += "<table>\n";
-                s += "<tr><td>ID</td><td>" + i.getId() + "</td></tr>\n";
-                s += "<tr><td>Status</td><td>" + ((i.isStatus()) ? "Open" : "Closed") + "</td></tr>\n";
-                s += "<tr><td>Priority</td><td>" + i.getPriority() + "</td></tr>\n";
-                s += "<tr><td>Assignee</td><td>" + i.getAssignee() + "</td></tr>\n";
-                s += "<tr><td>Summary</td><td>" + i.getSummary() + "</td></tr>\n";
-                s += "<tr><td>Description</td><td>" + i.getDescription() + "</td></tr>\n";
-                s += "<tr><td><a href=\"/EditBug?bugid=" + i.getId() + "\">Edit and Reassign</a></td><td><a href=\"/Email?bugid=" + i.getId() + "\">Email</a></td></tr>\n";
-                s += "</table>\n";
-            }
-        }
-        return s;
-    }
-
     protected static String vectorUserToSelect(Vector<User> v, String name, String selected) {
         String s = "";
         if (v != null) {
@@ -87,4 +69,5 @@ public abstract class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
+
 }

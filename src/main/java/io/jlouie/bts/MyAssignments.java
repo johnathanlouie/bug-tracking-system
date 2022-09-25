@@ -28,8 +28,7 @@ public class MyAssignments extends LoginServlet {
         User user = (User) request.getSession(false).getAttribute("user");
         String username = user.getUsername();
         Vector<Bug> bugs = DatabaseHandler.getAssignments(username);
-        String html = vectorBugToTable(bugs);
-        request.setAttribute("message", html);
+        request.setAttribute("bugs", bugs);
         String forwardPage = "/defectslist.jsp";
         return new LoginServletHelper(request, response, forwardPage);
     }

@@ -15,6 +15,7 @@
  */
 package io.jlouie.bts;
 
+import java.util.Vector;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,8 @@ public class ClosedDefects extends LoginServlet {
 
     @Override
     protected LoginServletHelper mainMethod(HttpServletRequest request, HttpServletResponse response) {
-        String s = vectorBugToTable(DatabaseHandler.getClosedDefects());
-        request.setAttribute("message", s);
+        Vector<Bug> bugs = DatabaseHandler.getClosedDefects();
+        request.setAttribute("bugs", bugs);
         String forwardPage = "/defectslist.jsp";
         return new LoginServletHelper(request, response, forwardPage);
     }
