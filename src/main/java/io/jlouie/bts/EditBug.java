@@ -29,7 +29,7 @@ public class EditBug extends LoginServlet {
         String s = vectorUserToSelect(DatabaseHandler.getAllUsers(), "assignee", bug.getAssignee());
         request.setAttribute("userlist", s);
         request.setAttribute("id", bug.getId());
-        request.setAttribute("status", bug.getStatus());
+        request.setAttribute("status", bug.isStatus());
         request.setAttribute("assignee", bug.getAssignee());
         request.setAttribute("description", bug.getDescription());
         request.setAttribute("priority", bug.getPriority());

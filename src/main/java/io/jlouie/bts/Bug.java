@@ -15,11 +15,13 @@
  */
 package io.jlouie.bts;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Johnathan Louie
  */
-public class Bug {
+public class Bug implements Serializable {
 
     private boolean status;
     private int priority;
@@ -28,61 +30,52 @@ public class Bug {
     private String description;
     private int id;
 
-    public Bug(boolean status, int priority, String assignee, String summary, String description, int id) {
-        this.status = status;
-        this.priority = priority;
-        this.assignee = assignee;
-        this.summary = summary;
-        this.description = description;
-        this.id = id;
-    }
-
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public String getAssignee() {
-        return assignee;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void setStatus(boolean status) {
         this.status = status;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public String getAssignee() {
+        return assignee;
     }
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
     }
 
+    public String getSummary() {
+        return summary;
+    }
+
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Bug{" + "status=" + status + ", priority=" + priority + ", assignee=" + assignee + ", summary=" + summary + ", description=" + description + ", id=" + id + '}';
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

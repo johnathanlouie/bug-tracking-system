@@ -47,7 +47,7 @@ public abstract class LoginServlet extends HttpServlet {
             for (Bug i : v) {
                 s += "<table>\n";
                 s += "<tr><td>ID</td><td>" + i.getId() + "</td></tr>\n";
-                s += "<tr><td>Status</td><td>" + ((i.getStatus()) ? "Open" : "Closed") + "</td></tr>\n";
+                s += "<tr><td>Status</td><td>" + ((i.isStatus()) ? "Open" : "Closed") + "</td></tr>\n";
                 s += "<tr><td>Priority</td><td>" + i.getPriority() + "</td></tr>\n";
                 s += "<tr><td>Assignee</td><td>" + i.getAssignee() + "</td></tr>\n";
                 s += "<tr><td>Summary</td><td>" + i.getSummary() + "</td></tr>\n";

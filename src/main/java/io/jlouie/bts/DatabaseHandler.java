@@ -96,21 +96,14 @@ public class DatabaseHandler {
         if (rawDefectInfo != null) {
             Vector<Bug> bugList = new Vector<>();
             Bug bug;
-            boolean status;
-            int priority;
-            String assignee;
-            String summary;
-            String description;
-            int id;
             for (Vector<String> i : rawDefectInfo) {
-                status = Integer.parseInt(i.get(1)) != 0;
-                //System.out.println(i.get(1));
-                priority = Integer.parseInt(i.get(5));
-                assignee = i.get(2);
-                summary = i.get(3);
-                description = i.get(4);
-                id = Integer.parseInt(i.get(0));
-                bug = new Bug(status, priority, assignee, summary, description, id);
+                bug = new Bug();
+                bug.setStatus(Integer.parseInt(i.get(1)) != 0);
+                bug.setPriority(Integer.parseInt(i.get(5)));
+                bug.setAssignee(i.get(2));
+                bug.setSummary(i.get(3));
+                bug.setDescription(i.get(4));
+                bug.setId(Integer.parseInt(i.get(0)));
                 bugList.add(bug);
             }
             return bugList;
@@ -122,7 +115,7 @@ public class DatabaseHandler {
         Vector<Bug> v = getAllDefects();
         Vector<Bug> v2 = new Vector<>();
         for (Bug i : v) {
-            if (i.getStatus()) {
+            if (i.isStatus()) {
                 v2.add(i);
             }
         }
@@ -136,7 +129,7 @@ public class DatabaseHandler {
         Vector<Bug> v = getAllDefects();
         Vector<Bug> v2 = new Vector<>();
         for (Bug i : v) {
-            if (!i.getStatus()) {
+            if (!i.isStatus()) {
                 v2.add(i);
             }
         }
@@ -195,7 +188,7 @@ public class DatabaseHandler {
     }
 
     protected static void updateDefect(Bug bug) {
-        String s = "UPDATE dts . bugs SET assignee='" + bug.getAssignee() + "', priority='" + bug.getPriority() + "', summary='" + bug.getSummary() + "', description='" + bug.getDescription() + "', status='" + ((bug.getStatus() == true) ? 1 : 0) + "' WHERE bugs . id=" + bug.getId();
+        String s = "UPDATE dts . bugs SET assignee='" + bug.getAssignee() + "', priority='" + bug.getPriority() + "', summary='" + bug.getSummary() + "', description='" + bug.getDescription() + "', status='" + ((bug.isStatus() == true) ? 1 : 0) + "' WHERE bugs . id=" + bug.getId();
         query(s);
     }
 
