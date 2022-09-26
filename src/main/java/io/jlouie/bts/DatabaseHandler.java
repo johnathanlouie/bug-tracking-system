@@ -78,7 +78,12 @@ public class DatabaseHandler {
     protected static User validateLogin(String username, String password) {
         Vector<Vector<String>> v = query("SELECT * FROM accounts WHERE username = '" + username + "' AND password = '" + password + "'");
         if (v != null) {
-            return new User(v.get(0).get(0), v.get(0).get(1), v.get(0).get(2));
+            Vector<String> foundUser = v.get(0);
+            User user = new User();
+            user.setUsername(foundUser.get(0));
+            user.setPassword(foundUser.get(1));
+            user.setEmail(foundUser.get(2));
+            return user;
         }
         return null;
     }
@@ -157,8 +162,13 @@ public class DatabaseHandler {
         Vector<Vector<String>> v = query("SELECT * FROM accounts");
         if (v != null) {
             Vector<User> v2 = new Vector<>();
+            User user;
             for (Vector<String> i : v) {
-                v2.add(new User(i.get(0), i.get(1), i.get(2)));
+                user = new User();
+                user.setUsername(i.get(0));
+                user.setPassword(i.get(1));
+                user.setEmail(i.get(2));
+                v2.add(user);
             }
             return v2;
         }
