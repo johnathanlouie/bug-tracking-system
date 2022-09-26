@@ -16,7 +16,6 @@
 package io.jlouie.bts;
 
 import java.io.IOException;
-import java.util.Vector;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,18 +38,6 @@ public abstract class LoginServlet extends HttpServlet {
             request.setAttribute("message", "You are not logged in.");
             dispatcher.forward(request, response);
         }
-    }
-
-    protected static String vectorUserToSelect(Vector<User> v, String name, String selected) {
-        String s = "";
-        if (v != null) {
-            s += "<select name=\"" + name + "\">\n";
-            for (User i : v) {
-                s += "<option value=\"" + i.getUsername() + "\" " + ((i.getUsername().equals(selected)) ? "selected" : "") + ">" + i.getUsername() + "</option>\n";
-            }
-            s += "</select>\n";
-        }
-        return s;
     }
 
     @Override
