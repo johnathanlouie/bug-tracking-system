@@ -70,7 +70,8 @@ public class DatabaseHandler {
     }
 
     protected static User validateLogin(String username, String password) {
-        Vector<Vector<String>> v = query("SELECT * FROM accounts WHERE username = '" + username + "' AND password = '" + password + "'");
+        String sql = String.format("SELECT username, password, email FROM accounts WHERE username='%s' AND password='%s' LIMIT 1;", username, password);
+        Vector<Vector<String>> v = query(sql);
         if (v != null) {
             Vector<String> foundUser = v.get(0);
             User user = new User();
@@ -83,15 +84,17 @@ public class DatabaseHandler {
     }
 
     protected static void insertBug(int priority, String summary, String description, String username) {
-        query("INSERT INTO dts . bugs (id, status, assignee, summary, description, priority) VALUES (NULL, '1', '" + username + "', '" + summary + "', '" + description + "', '" + priority + "')");
+        String sql = String.format("INSERT INTO bugs (id, status, assignee, summary, description, priority) VALUES (NULL, 1, '%s', '%s', '%s', %d);", username, summary, description, priority);
+        query(sql);
     }
 
     protected static void insertUser(String username, String password, String email) {
-        query("INSERT INTO dts.accounts (username, password, email) VALUES ('" + username + "', '" + password + "', '" + email + "')");
+        String sql = String.format("INSERT INTO accounts (username, password, email) VALUES ('%s', '%s', '%s');", username, password, email);
+        query(sql);
     }
 
     protected static Vector<Bug> getAllDefects() {
-        Vector<Vector<String>> rawDefectInfo = query("SELECT * FROM bugs");
+        Vector<Vector<String>> rawDefectInfo = query("SELECT id, status, assignee, summary, description, priority FROM bugs;");
         if (rawDefectInfo != null) {
             Vector<Bug> bugList = new Vector<>();
             Bug bug;
@@ -153,7 +156,7 @@ public class DatabaseHandler {
     }
 
     protected static Vector<User> getAllUsers() {
-        Vector<Vector<String>> v = query("SELECT * FROM accounts");
+        Vector<Vector<String>> v = query("SELECT username, password, email FROM accounts;");
         if (v != null) {
             Vector<User> v2 = new Vector<>();
             User user;
@@ -192,7 +195,7 @@ public class DatabaseHandler {
     }
 
     protected static void updateDefect(Bug bug) {
-        String s = "UPDATE dts . bugs SET assignee='" + bug.getAssignee() + "', priority='" + bug.getPriority() + "', summary='" + bug.getSummary() + "', description='" + bug.getDescription() + "', status='" + (bug.isStatus() ? 1 : 0) + "' WHERE bugs . id=" + bug.getId();
+        String s = String.format("UPDATE bugs SET assignee='%s', priority=%d, summary='%s', description='%s', status=%d WHERE id=%d;", bug.getAssignee(), bug.getPriority(), bug.getSummary(), bug.getDescription(), bug.isStatus() ? 1 : 0, bug.getId());
         query(s);
     }
 
