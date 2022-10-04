@@ -50,16 +50,17 @@ public class DatabaseHandler {
             ResultSet r = s.getResultSet();
             // BEGIN turn ResultSet to vector
             Vector<Vector<String>> vector = new Vector<>();
-            if (r != null) {
-                ResultSetMetaData rsmd = r.getMetaData();
-                int column = rsmd.getColumnCount();
-                while (r.next()) {
-                    Vector<String> v = new Vector<>();
-                    for (int i = 1; i <= column; i++) {
-                        v.add(r.getString(i));
-                    }
-                    vector.add(v);
+            if (r == null) {
+                return vector;
+            }
+            ResultSetMetaData rsmd = r.getMetaData();
+            int column = rsmd.getColumnCount();
+            while (r.next()) {
+                Vector<String> v = new Vector<>();
+                for (int i = 1; i <= column; i++) {
+                    v.add(r.getString(i));
                 }
+                vector.add(v);
             }
             // END finish making vector
             s.close();
@@ -67,22 +68,22 @@ public class DatabaseHandler {
             return vector;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
         }
-        return null;
     }
 
     protected static User validateLogin(String username, String password) {
         String sql = String.format("SELECT username, password, email FROM accounts WHERE username='%s' AND password='%s' LIMIT 1;", username, password);
         Vector<Vector<String>> v = query(sql);
-        if (v != null) {
-            Vector<String> foundUser = v.get(0);
-            User user = new User();
-            user.setUsername(foundUser.get(0));
-            user.setPassword(foundUser.get(1));
-            user.setEmail(foundUser.get(2));
-            return user;
+        if (v.size() != 1) {
+            return null;
         }
-        return null;
+        Vector<String> foundUser = v.get(0);
+        User user = new User();
+        user.setUsername(foundUser.get(0));
+        user.setPassword(foundUser.get(1));
+        user.setEmail(foundUser.get(2));
+        return user;
     }
 
     protected static void insertBug(int priority, String summary, String description, String username) {
@@ -97,22 +98,19 @@ public class DatabaseHandler {
 
     protected static Vector<Bug> getAllDefects() {
         Vector<Vector<String>> rawDefectInfo = query("SELECT id, status, assignee, summary, description, priority FROM bugs;");
-        if (rawDefectInfo != null) {
-            Vector<Bug> bugList = new Vector<>();
-            Bug bug;
-            for (Vector<String> i : rawDefectInfo) {
-                bug = new Bug();
-                bug.setStatus(Integer.parseInt(i.get(1)) != 0);
-                bug.setPriority(Integer.parseInt(i.get(5)));
-                bug.setAssignee(i.get(2));
-                bug.setSummary(i.get(3));
-                bug.setDescription(i.get(4));
-                bug.setId(Integer.parseInt(i.get(0)));
-                bugList.add(bug);
-            }
-            return bugList;
+        Vector<Bug> bugList = new Vector<>();
+        Bug bug;
+        for (Vector<String> i : rawDefectInfo) {
+            bug = new Bug();
+            bug.setStatus(Integer.parseInt(i.get(1)) != 0);
+            bug.setPriority(Integer.parseInt(i.get(5)));
+            bug.setAssignee(i.get(2));
+            bug.setSummary(i.get(3));
+            bug.setDescription(i.get(4));
+            bug.setId(Integer.parseInt(i.get(0)));
+            bugList.add(bug);
         }
-        return null;
+        return bugList;
     }
 
     protected static Vector<Bug> getOpenDefects() {
@@ -123,10 +121,7 @@ public class DatabaseHandler {
                 v2.add(i);
             }
         }
-        if (v2.size() > 0) {
-            return v2;
-        }
-        return null;
+        return v2;
     }
 
     protected static Vector<Bug> getClosedDefects() {
@@ -137,10 +132,7 @@ public class DatabaseHandler {
                 v2.add(i);
             }
         }
-        if (v2.size() > 0) {
-            return v2;
-        }
-        return null;
+        return v2;
     }
 
     protected static Vector<Bug> getAssignments(String username) {
@@ -151,27 +143,21 @@ public class DatabaseHandler {
                 v2.add(i);
             }
         }
-        if (v2.size() > 0) {
-            return v2;
-        }
-        return null;
+        return v2;
     }
 
     protected static Vector<User> getAllUsers() {
         Vector<Vector<String>> v = query("SELECT username, password, email FROM accounts;");
-        if (v != null) {
-            Vector<User> v2 = new Vector<>();
-            User user;
-            for (Vector<String> i : v) {
-                user = new User();
-                user.setUsername(i.get(0));
-                user.setPassword(i.get(1));
-                user.setEmail(i.get(2));
-                v2.add(user);
-            }
-            return v2;
+        Vector<User> v2 = new Vector<>();
+        User user;
+        for (Vector<String> i : v) {
+            user = new User();
+            user.setUsername(i.get(0));
+            user.setPassword(i.get(1));
+            user.setEmail(i.get(2));
+            v2.add(user);
         }
-        return null;
+        return v2;
     }
 
     protected static User getUserByName(String username) {
@@ -186,11 +172,9 @@ public class DatabaseHandler {
 
     protected static Bug getBugById(int id) {
         Vector<Bug> v = getAllDefects();
-        if (v != null) {
-            for (Bug i : v) {
-                if (i.getId() == id) {
-                    return i;
-                }
+        for (Bug i : v) {
+            if (i.getId() == id) {
+                return i;
             }
         }
         return null;
