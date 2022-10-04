@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class DatabaseHandler {
     /**
      * Sends a query to the database and returns the results.
      */
-    private static Vector<Vector<String>> query(String sql) {
+    private static Vector<HashMap<String, Object>> query(String sql) {
         String url = System.getenv("MYSQL_URL");
         String username = System.getenv("MYSQL_USER");
         String password = System.getenv("MYSQL_PASSWORD");
@@ -49,16 +50,18 @@ public class DatabaseHandler {
             // get the results
             ResultSet r = s.getResultSet();
             // BEGIN turn ResultSet to vector
-            Vector<Vector<String>> vector = new Vector<>();
+            Vector<HashMap<String, Object>> vector = new Vector<>();
             if (r == null) {
                 return vector;
             }
             ResultSetMetaData rsmd = r.getMetaData();
             int column = rsmd.getColumnCount();
+            String columnName;
             while (r.next()) {
-                Vector<String> v = new Vector<>();
+                HashMap<String, Object> v = new HashMap<>();
                 for (int i = 1; i <= column; i++) {
-                    v.add(r.getString(i));
+                    columnName = rsmd.getColumnName(i);
+                    v.put(columnName, r.getObject(i));
                 }
                 vector.add(v);
             }
@@ -74,15 +77,15 @@ public class DatabaseHandler {
 
     protected static User validateLogin(String username, String password) {
         String sql = String.format("SELECT username, password, email FROM accounts WHERE username='%s' AND password='%s' LIMIT 1;", username, password);
-        Vector<Vector<String>> v = query(sql);
+        Vector<HashMap<String, Object>> v = query(sql);
         if (v.size() != 1) {
             return null;
         }
-        Vector<String> foundUser = v.get(0);
+        HashMap<String, Object> foundUser = v.get(0);
         User user = new User();
-        user.setUsername(foundUser.get(0));
-        user.setPassword(foundUser.get(1));
-        user.setEmail(foundUser.get(2));
+        user.setUsername((String) foundUser.get("username"));
+        user.setPassword((String) foundUser.get("password"));
+        user.setEmail((String) foundUser.get("email"));
         return user;
     }
 
@@ -97,17 +100,17 @@ public class DatabaseHandler {
     }
 
     protected static Vector<Bug> getAllDefects() {
-        Vector<Vector<String>> rawDefectInfo = query("SELECT id, status, assignee, summary, description, priority FROM bugs;");
+        Vector<HashMap<String, Object>> rawDefectInfo = query("SELECT id, status, assignee, summary, description, priority FROM bugs;");
         Vector<Bug> bugList = new Vector<>();
         Bug bug;
-        for (Vector<String> i : rawDefectInfo) {
+        for (HashMap<String, Object> i : rawDefectInfo) {
             bug = new Bug();
-            bug.setId(Integer.parseInt(i.get(0)));
-            bug.setStatus(Integer.parseInt(i.get(1)) != 0);
-            bug.setAssignee(i.get(2));
-            bug.setSummary(i.get(3));
-            bug.setDescription(i.get(4));
-            bug.setPriority(Integer.parseInt(i.get(5)));
+            bug.setId((Long) i.get("id"));
+            bug.setStatus((Boolean) i.get("status"));
+            bug.setAssignee((String) i.get("assignee"));
+            bug.setSummary((String) i.get("summary"));
+            bug.setDescription((String) i.get("description"));
+            bug.setPriority((Integer) i.get("priority"));
             bugList.add(bug);
         }
         return bugList;
@@ -147,14 +150,14 @@ public class DatabaseHandler {
     }
 
     protected static Vector<User> getAllUsers() {
-        Vector<Vector<String>> v = query("SELECT username, password, email FROM accounts;");
+        Vector<HashMap<String, Object>> v = query("SELECT username, password, email FROM accounts;");
         Vector<User> v2 = new Vector<>();
         User user;
-        for (Vector<String> i : v) {
+        for (HashMap<String, Object> i : v) {
             user = new User();
-            user.setUsername(i.get(0));
-            user.setPassword(i.get(1));
-            user.setEmail(i.get(2));
+            user.setUsername((String) i.get("username"));
+            user.setPassword((String) i.get("password"));
+            user.setEmail((String) i.get("email"));
             v2.add(user);
         }
         return v2;
