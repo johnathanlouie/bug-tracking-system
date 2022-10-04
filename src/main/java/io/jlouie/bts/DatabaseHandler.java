@@ -102,12 +102,12 @@ public class DatabaseHandler {
         Bug bug;
         for (Vector<String> i : rawDefectInfo) {
             bug = new Bug();
+            bug.setId(Integer.parseInt(i.get(0)));
             bug.setStatus(Integer.parseInt(i.get(1)) != 0);
-            bug.setPriority(Integer.parseInt(i.get(5)));
             bug.setAssignee(i.get(2));
             bug.setSummary(i.get(3));
             bug.setDescription(i.get(4));
-            bug.setId(Integer.parseInt(i.get(0)));
+            bug.setPriority(Integer.parseInt(i.get(5)));
             bugList.add(bug);
         }
         return bugList;
