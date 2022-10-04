@@ -105,21 +105,25 @@ public class DatabaseHandler {
         query(sql);
     }
 
-    protected static Vector<Bug> getAllDefects() {
-        Vector<HashMap<String, Object>> rawDefectInfo = query("SELECT id, status, assignee, summary, description, priority FROM bugs;");
-        Vector<Bug> bugList = new Vector<>();
+    private static Vector<Bug> toBugs(Vector<HashMap<String, Object>> sqlResults) {
+        Vector<Bug> bugs = new Vector<>();
         Bug bug;
-        for (HashMap<String, Object> i : rawDefectInfo) {
+        for (HashMap<String, Object> bugData : sqlResults) {
             bug = new Bug();
-            bug.setId((Long) i.get("id"));
-            bug.setStatus((Boolean) i.get("status"));
-            bug.setAssignee((String) i.get("assignee"));
-            bug.setSummary((String) i.get("summary"));
-            bug.setDescription((String) i.get("description"));
-            bug.setPriority((Integer) i.get("priority"));
-            bugList.add(bug);
+            bug.setId((Long) bugData.get("id"));
+            bug.setStatus((Boolean) bugData.get("status"));
+            bug.setAssignee((String) bugData.get("assignee"));
+            bug.setSummary((String) bugData.get("summary"));
+            bug.setDescription((String) bugData.get("description"));
+            bug.setPriority((Integer) bugData.get("priority"));
+            bugs.add(bug);
         }
-        return bugList;
+        return bugs;
+    }
+
+    protected static Vector<Bug> getAllDefects() {
+        String sql = "SELECT id, status, assignee, summary, description, priority FROM bugs;";
+        return toBugs(query(sql));
     }
 
     protected static Vector<Bug> getOpenDefects() {
