@@ -40,8 +40,11 @@ public class DatabaseHandler {
         String username = System.getenv("MYSQL_USER");
         String password = System.getenv("MYSQL_PASSWORD");
         try {
-            // load driver
             Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            throw new RuntimeException(ex);
+        }
+        try {
             // connect to database
             Connection connection = DriverManager.getConnection(url, username, password);
             // sends a sql statement
@@ -69,7 +72,7 @@ public class DatabaseHandler {
             statement.close();
             connection.close();
             return returnValue;
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
         }
