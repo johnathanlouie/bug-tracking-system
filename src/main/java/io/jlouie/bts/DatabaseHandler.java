@@ -127,36 +127,18 @@ public class DatabaseHandler {
     }
 
     protected static Vector<Bug> getOpenDefects() {
-        Vector<Bug> v = getAllDefects();
-        Vector<Bug> v2 = new Vector<>();
-        for (Bug i : v) {
-            if (i.isStatus()) {
-                v2.add(i);
-            }
-        }
-        return v2;
+        String sql = "SELECT id, status, assignee, summary, description, priority FROM bugs WHERE status=1;";
+        return toBugs(query(sql));
     }
 
     protected static Vector<Bug> getClosedDefects() {
-        Vector<Bug> v = getAllDefects();
-        Vector<Bug> v2 = new Vector<>();
-        for (Bug i : v) {
-            if (!i.isStatus()) {
-                v2.add(i);
-            }
-        }
-        return v2;
+        String sql = "SELECT id, status, assignee, summary, description, priority FROM bugs WHERE status=0;";
+        return toBugs(query(sql));
     }
 
     protected static Vector<Bug> getAssignments(String username) {
-        Vector<Bug> v = getAllDefects();
-        Vector<Bug> v2 = new Vector<>();
-        for (Bug i : v) {
-            if (i.getAssignee().equals(username)) {
-                v2.add(i);
-            }
-        }
-        return v2;
+        String sql = String.format("SELECT id, status, assignee, summary, description, priority FROM bugs WHERE assignee='%s';", username);
+        return toBugs(query(sql));
     }
 
     protected static Vector<User> getAllUsers() {
@@ -173,14 +155,13 @@ public class DatabaseHandler {
         return users.get(0);
     }
 
-    protected static Bug getBugById(int id) {
-        Vector<Bug> v = getAllDefects();
-        for (Bug i : v) {
-            if (i.getId() == id) {
-                return i;
-            }
+    protected static Bug getBugById(long id) {
+        String sql = String.format("SELECT id, status, assignee, summary, description, priority FROM bugs WHERE id=%d LIMIT 1;", id);
+        Vector<Bug> bugs = toBugs(query(sql));
+        if (bugs.size() != 1) {
+            return null;
         }
-        return null;
+        return bugs.firstElement();
     }
 
     protected static void updateDefect(Bug bug) {
