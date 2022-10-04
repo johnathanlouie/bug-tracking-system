@@ -31,7 +31,9 @@ import java.util.logging.Logger;
  */
 public class DatabaseHandler {
 
-    // sends a query to the database and returns the results
+    /**
+     * Sends a query to the database and returns the results.
+     */
     private static Vector<Vector<String>> query(String sql) {
         String url = System.getenv("MYSQL_URL");
         String username = System.getenv("MYSQL_USER");
