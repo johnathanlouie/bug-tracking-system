@@ -92,7 +92,7 @@ public class DatabaseHandler {
         if (users.size() != 1) {
             return null;
         }
-        return users.get(0);
+        return users.firstElement();
     }
 
     protected static void insertBug(int priority, String summary, String description, String username) {
@@ -152,7 +152,7 @@ public class DatabaseHandler {
         if (users.size() != 1) {
             return null;
         }
-        return users.get(0);
+        return users.firstElement();
     }
 
     protected static Bug getBugById(long id) {
