@@ -75,18 +75,24 @@ public class DatabaseHandler {
         }
     }
 
+    private static Vector<User> toUsers(Vector<HashMap<String, Object>> sqlResults) {
+        Vector<User> users = new Vector<>();
+        for (HashMap<String, Object> foundUser : sqlResults) {
+            User user = new User();
+            user.setUsername((String) foundUser.get("username"));
+            user.setPassword((String) foundUser.get("password"));
+            user.setEmail((String) foundUser.get("email"));
+        }
+        return users;
+    }
+
     protected static User validateLogin(String username, String password) {
         String sql = String.format("SELECT username, password, email FROM accounts WHERE username='%s' AND password='%s' LIMIT 1;", username, password);
-        Vector<HashMap<String, Object>> v = query(sql);
-        if (v.size() != 1) {
+        Vector<User> users = toUsers(query(sql));
+        if (users.size() != 1) {
             return null;
         }
-        HashMap<String, Object> foundUser = v.get(0);
-        User user = new User();
-        user.setUsername((String) foundUser.get("username"));
-        user.setPassword((String) foundUser.get("password"));
-        user.setEmail((String) foundUser.get("email"));
-        return user;
+        return users.get(0);
     }
 
     protected static void insertBug(int priority, String summary, String description, String username) {
@@ -150,17 +156,8 @@ public class DatabaseHandler {
     }
 
     protected static Vector<User> getAllUsers() {
-        Vector<HashMap<String, Object>> v = query("SELECT username, password, email FROM accounts;");
-        Vector<User> v2 = new Vector<>();
-        User user;
-        for (HashMap<String, Object> i : v) {
-            user = new User();
-            user.setUsername((String) i.get("username"));
-            user.setPassword((String) i.get("password"));
-            user.setEmail((String) i.get("email"));
-            v2.add(user);
-        }
-        return v2;
+        String sql = "SELECT username, password, email FROM accounts;";
+        return toUsers(query(sql));
     }
 
     protected static User getUserByName(String username) {
