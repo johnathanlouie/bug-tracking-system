@@ -43,32 +43,32 @@ public class DatabaseHandler {
             // load driver
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             // connect to database
-            Connection c = DriverManager.getConnection(url, username, password);
+            Connection connection = DriverManager.getConnection(url, username, password);
             // sends a sql statement
-            Statement s = c.createStatement();
-            s.execute(sql);
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
             // get the results
-            ResultSet r = s.getResultSet();
+            ResultSet results = statement.getResultSet();
             // BEGIN turn ResultSet to vector
-            Vector<HashMap<String, Object>> vector = new Vector<>();
-            if (r == null) {
-                return vector;
+            Vector<HashMap<String, Object>> returnValue = new Vector<>();
+            if (results == null) {
+                return returnValue;
             }
-            ResultSetMetaData rsmd = r.getMetaData();
-            int column = rsmd.getColumnCount();
+            ResultSetMetaData metadata = results.getMetaData();
+            int columnCount = metadata.getColumnCount();
             String columnName;
-            while (r.next()) {
-                HashMap<String, Object> v = new HashMap<>();
-                for (int i = 1; i <= column; i++) {
-                    columnName = rsmd.getColumnName(i);
-                    v.put(columnName, r.getObject(i));
+            while (results.next()) {
+                HashMap<String, Object> rowData = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    columnName = metadata.getColumnName(i);
+                    rowData.put(columnName, results.getObject(i));
                 }
-                vector.add(v);
+                returnValue.add(rowData);
             }
             // END finish making vector
-            s.close();
-            c.close();
-            return vector;
+            statement.close();
+            connection.close();
+            return returnValue;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
