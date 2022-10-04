@@ -161,13 +161,12 @@ public class DatabaseHandler {
     }
 
     protected static User getUserByName(String username) {
-        Vector<User> v = getAllUsers();
-        for (User i : v) {
-            if (i.getUsername().equals(username)) {
-                return i;
-            }
+        String sql = String.format("SELECT username, password, email FROM accounts WHERE username='%s' LIMIT 1;", username);
+        Vector<User> users = toUsers(query(sql));
+        if (users.size() != 1) {
+            return null;
         }
-        return null;
+        return users.get(0);
     }
 
     protected static Bug getBugById(int id) {
