@@ -66,15 +66,10 @@ public class DatabaseHandler {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             throw new RuntimeException(ex);
         }
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            Statement statement = connection.createStatement();
+        try ( Connection connection = DriverManager.getConnection(url, username, password);  Statement statement = connection.createStatement()) {
             statement.execute(sql);
             ResultSet results = statement.getResultSet();
-            Vector<HashMap<String, Object>> returnValue = toHashMap(results);
-            statement.close();
-            connection.close();
-            return returnValue;
+            return toHashMap(results);
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
