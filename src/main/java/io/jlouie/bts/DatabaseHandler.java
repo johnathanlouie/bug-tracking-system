@@ -32,6 +32,28 @@ import java.util.logging.Logger;
  */
 public class DatabaseHandler {
 
+    private static Vector<HashMap<String, Object>> toHashMap(ResultSet results) {
+        Vector<HashMap<String, Object>> returnValue = new Vector<>();
+        if (results == null) {
+            return returnValue;
+        }
+        try {
+            ResultSetMetaData metadata = results.getMetaData();
+            int columnCount = metadata.getColumnCount();
+            while (results.next()) {
+                HashMap<String, Object> rowData = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metadata.getColumnName(i);
+                    rowData.put(columnName, results.getObject(i));
+                }
+                returnValue.add(rowData);
+            }
+            return returnValue;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     /**
      * Sends a query to the database and returns the results.
      */
@@ -52,23 +74,7 @@ public class DatabaseHandler {
             statement.execute(sql);
             // get the results
             ResultSet results = statement.getResultSet();
-            // BEGIN turn ResultSet to vector
-            Vector<HashMap<String, Object>> returnValue = new Vector<>();
-            if (results == null) {
-                return returnValue;
-            }
-            ResultSetMetaData metadata = results.getMetaData();
-            int columnCount = metadata.getColumnCount();
-            String columnName;
-            while (results.next()) {
-                HashMap<String, Object> rowData = new HashMap<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    columnName = metadata.getColumnName(i);
-                    rowData.put(columnName, results.getObject(i));
-                }
-                returnValue.add(rowData);
-            }
-            // END finish making vector
+            Vector<HashMap<String, Object>> returnValue = toHashMap(results);
             statement.close();
             connection.close();
             return returnValue;
