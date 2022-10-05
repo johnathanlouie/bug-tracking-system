@@ -67,12 +67,9 @@ public class DatabaseHandler {
             throw new RuntimeException(ex);
         }
         try {
-            // connect to database
             Connection connection = DriverManager.getConnection(url, username, password);
-            // sends a sql statement
             Statement statement = connection.createStatement();
             statement.execute(sql);
-            // get the results
             ResultSet results = statement.getResultSet();
             Vector<HashMap<String, Object>> returnValue = toHashMap(results);
             statement.close();
